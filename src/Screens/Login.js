@@ -5,51 +5,61 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import bowingman from "../../assets/bowing_man.png"
+import { SignedIn, SignedOut } from "@clerk/clerk-expo";
+import SignInWithOAuth from "./SignInWithOAuth";
+import bowingman from "../../assets/bowing_man.png";
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Abraza</Text>
-      <View style={styles.profileContainer}>
-        <Image
-          style={styles.profileImage}
-          source={bowingman}
+      <SignedIn>
+        <Text style={styles.title}>Abraza</Text>
+        <View style={styles.profileContainer}>
+          <Image style={styles.profileImage} source={bowingman} />
+        </View>
+        <TextInput style={styles.input} placeholder="Nombre de usuario" />
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña"
+          secureTextEntry
         />
-      </View>
-      <TextInput style={styles.input} placeholder="Nombre de usuario" />
-      <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry />
-      <TouchableOpacity style={styles.forgotPassword}>
-        <Text style={styles.forgotPasswordText}>¿Te has olvidado de la contraseña?</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-      onPress={() => navigation.navigate("Home")}
-      style={styles.loginButton}>
-        <Text style={styles.loginText}>Iniciar sesión</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-      onPress={() => navigation.navigate("Home")}
-      style={styles.facebookButton}>
-        <Ionicons name="logo-facebook" size={24} color="#1877F2" />
-        <Text style={styles.facebookText}> Log in with Facebook</Text>
-      </TouchableOpacity>
-      <View style={styles.orContainer}>
-        <View style={styles.line}></View>
-        <Text style={styles.orText}>O</Text>
-        <View style={styles.line}></View>
-      </View>
-      <View style={styles.signUpContainer}>
-        <Text>¿No tienes cuenta? </Text>
-        <TouchableOpacity 
-        onPress={() => navigation.navigate("Signup")}
-        >
-          <Text style={styles.signUpText}>Regístrate.</Text>
+        <TouchableOpacity style={styles.forgotPassword}>
+          <Text style={styles.forgotPasswordText}>
+            ¿Te has olvidado de la contraseña?
+          </Text>
         </TouchableOpacity>
-      </View>
-      <Text style={styles.footer}>Abraza</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Home")}
+          style={styles.loginButton}
+        >
+          <Text style={styles.loginText}>Iniciar sesión</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Home")}
+          style={styles.facebookButton}
+        >
+          <Ionicons name="logo-facebook" size={24} color="#1877F2" />
+          <Text style={styles.facebookText}> Log in with Facebook</Text>
+        </TouchableOpacity>
+        <View style={styles.orContainer}>
+          <View style={styles.line}></View>
+          <Text style={styles.orText}>O</Text>
+          <View style={styles.line}></View>
+        </View>
+        <View style={styles.signUpContainer}>
+          <Text>¿No tienes cuenta? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+            <Text style={styles.signUpText}>Regístrate.</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.footer}>Abraza</Text>
+      </SignedIn>
+      <SignedOut>
+        <SignInWithOAuth />
+      </SignedOut>
     </View>
   );
 };
