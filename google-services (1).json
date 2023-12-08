@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "973021271513",
+    "project_id": "abraza-b4cbb",
+    "storage_bucket": "abraza-b4cbb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973021271513:android:bd09fb6ac869440afaf5c8",
+        "android_client_info": {
+          "package_name": "com.wisebear.abraza"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5z9jZQGHp-XZfRb6nHA9WY-wrUDMzwNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,51 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const CreateUsername = ({navigation}) => {
-  const [username, setUsername] = useState("");
-  const [usernameError, setUsernameError] = useState(null);
-
-  const checkUsernameAvailability = async () => {
-    try {
-      // Validar el formato del nombre de usuario
-      if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-        setUsernameError('Solo se permiten letras, números y guiones bajos (_).');
-        return;
-      }
-
-      // Verificar si el nombre de usuario ya está en uso en la base de datos
-      const snapshot = await database()
-        .ref('users')
-        .orderByChild('username')
-        .equalTo(username)
-        .once('value');
-
-      if (snapshot.exists()) {
-        setUsernameError('Nombre de usuario no disponible, elige otro.');
-      } else {
-        setUsernameError(null);
-        navigation.navigate('Home');
-        // El nombre de usuario es válido, continuar con el proceso de registro
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Error al verificar la disponibilidad del nombre de usuario');
-      console.error('Error al verificar la disponibilidad del nombre de usuario', error);
-    }
-  };
-
-  const handleSignup = () => {
-    checkUsernameAvailability();
-  };
-
-
+const CreatePassword = ({navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton}>
@@ -53,17 +16,10 @@ const CreateUsername = ({navigation}) => {
       </TouchableOpacity>
       <Text style={styles.title}>Crea un nombre de usuario</Text>
       <Text style={styles.subtitle}>Introduce un nombre de usuario. Podrás cambiarlo más tarde.</Text>
-      <TextInput style={[
-          styles.input,
-          usernameError && { borderColor: 'red' },
-          !usernameError && username && { borderColor: 'green' },
-        ]}
-         placeholder="Nombre de usuario"
-          value={username}
-           onChangeText={(text) => setUsername(text)} />
-            {usernameError && <Text style={styles.errorText}>{usernameError}</Text>}
+      <TextInput style={styles.input} placeholder="Nombre de usuario" />
+      
       <TouchableOpacity
-      onPress={handleSignup}
+      onPress={() => navigation.navigate("CreatePassword")}
       style={styles.loginButton}>
         <Text style={styles.loginText}>Siguiente</Text>
       </TouchableOpacity>
@@ -119,10 +75,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
   },
-  errorText: {
-    color: 'red',
-    marginBottom: 10,
-  },
   loginButton: {
     height: 50,
     backgroundColor: "#0099FF",
@@ -174,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateUsername;
+export default CreatePassword;
