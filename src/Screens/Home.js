@@ -10,12 +10,13 @@ import {
   Dimensions
 } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-// import Carousel from "react-native-snap-carousel";
 import Carousel from "react-native-snap-carousel-v4";
 import { users } from "../utils/users";
 import male from "../../assets/male.png"
 import female from "../../assets/female.png"
 import { colors } from "../utils/colors";
+import UseAuthExample from "./useAuthExample";
+import UseUserExample from "./useUserExample";
 
 const dimensions = Dimensions.get("screen")
 
@@ -126,7 +127,9 @@ const InstagramFeed = ({navigation}) => {
         </View>
       </View>
 
-      <View style={styles.storiesContainer}>
+      {/* <View style={styles.storiesContainer}>
+        <UseAuthExample/>
+
         <FlatList
           horizontal
           data={data}
@@ -140,8 +143,9 @@ const InstagramFeed = ({navigation}) => {
           )}
           keyExtractor={(item) => item.id}
         />
-      </View>
+      </View> */}
       <View style={styles.bgContainer}>
+        <Text>Sugeridos</Text>
         <View style={styles.suggestedContainer}>
 
         <Carousel

@@ -1,8 +1,9 @@
 import React from "react";
 import * as WebBrowser from "expo-web-browser";
-import { Button } from "react-native";
+import { StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
 import { useWarmUpBrowser } from "../utils/useWarmUpBrowser";
+import { Ionicons } from "@expo/vector-icons";
  
 WebBrowser.maybeCompleteAuthSession();
  
@@ -29,10 +30,31 @@ const SignInWithOAuth = () => {
   }, []);
  
   return (
-    <Button
-      title="Sign in with Google"
-      onPress={onPress}
-    />
+    <TouchableOpacity
+          onPress={onPress}
+          style={styles.loginButton}
+        >
+          <Ionicons name="logo-google" size={24} color="#000000" style={{paddingRight: 14}} />
+          <Text style={styles.loginText}>Iniciar sesión con Google</Text>
+        </TouchableOpacity>
   );
 }
 export default SignInWithOAuth;
+
+const styles = StyleSheet.create({
+  loginButton: {
+    height: 50,
+    flexDirection: "row",
+    display: "flex",
+    backgroundColor: "#0099FF",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+    marginVertical: 20,
+  },
+  loginText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  }
+});

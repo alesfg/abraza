@@ -6,13 +6,32 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Button
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { SignedIn, SignedOut } from "@clerk/clerk-expo";
+import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-expo";
 import SignInWithOAuth from "./SignInWithOAuth";
 import bowingman from "../../assets/bowing_man.png";
 
+
 const Login = ({ navigation }) => {
+  const SignOut = () => {
+    const { isLoaded,signOut } = useAuth();
+    if (!isLoaded) {
+      return null;
+    }
+    return (
+      <View>
+        <Button
+          title="Sign Out"
+          onPress={() => {
+            signOut();
+          }}
+        />
+      </View>
+    );
+  };
+  
   return (
     <View style={styles.container}>
       <SignedIn>
@@ -37,6 +56,7 @@ const Login = ({ navigation }) => {
         >
           <Text style={styles.loginText}>Iniciar sesión</Text>
         </TouchableOpacity>
+        <SignOut/>
         <TouchableOpacity
           onPress={() => navigation.navigate("Home")}
           style={styles.facebookButton}
@@ -58,7 +78,18 @@ const Login = ({ navigation }) => {
         <Text style={styles.footer}>Abraza</Text>
       </SignedIn>
       <SignedOut>
+      <Text style={styles.title}>Abraza</Text>
+        <View style={styles.profileContainer}>
+          <Image style={styles.profileImage} source={bowingman} />
+        </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Home")}
+          style={styles.loginButton}
+        >
+          <Text style={styles.loginText}>Iniciar sesión</Text>
+        </TouchableOpacity>
         <SignInWithOAuth />
+        <Text style={styles.footer}>Abraza</Text>
       </SignedOut>
     </View>
   );

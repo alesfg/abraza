@@ -9,12 +9,30 @@ import { ClerkProvider } from "@clerk/clerk-expo";
 import SignUp from "./src/Screens/Navigation/SignUp";
 import Notifications from "./src/Screens/Notification";
 import Constants from "expo-constants";
+import * as SecureStore from "expo-secure-store";
 
+const tokenCache = {
+  async getToken(key) {
+    try {
+      return SecureStore.getItemAsync(key);
+    } catch (err) {
+      return null;
+    }
+  },
+  async saveToken(key, value) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (err) {
+      return;
+    }
+  },
+};
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <ClerkProvider
+      tokenCache={tokenCache}
       publishableKey={Constants.expoConfig.extra.clerkPublishableKey}
     >
       <NavigationContainer>

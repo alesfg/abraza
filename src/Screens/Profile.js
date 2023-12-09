@@ -6,10 +6,17 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons"; // Or any other icon library you prefer
+import { useAuth, useUser } from "@clerk/clerk-expo";
+import male from "../../assets/male.png"
+import female from "../../assets/female.png"
 
+const dimensions = Dimensions.get("screen")
 export default function ProfileScreen() {
+  const { user } = useUser();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -20,9 +27,9 @@ export default function ProfileScreen() {
       <View style={styles.profileInfo}>
         <Image
           style={styles.profileImage}
-          source={{
-            uri: "https://picsum.photos/id/37/200/300",
-          }}
+          source={user!=null ? {
+            uri: user?.imageUrl || "https://picsum.photos/id/37/200/300",
+          } : male}
         />
         <View style={styles.profileNumbers}>
           <Text style={styles.postCount}>49 </Text>
@@ -85,6 +92,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF",
+    width: dimensions.width
   },
   header: {
     flexDirection: "row",
@@ -102,8 +110,10 @@ const styles = StyleSheet.create({
   },
   profileInfo: {
     flexDirection: "row",
+    justifyContent: "space-evenly",
     padding: 15,
     alignItems: "center",
+    width: dimensions.width
   },
   profileImage: {
     width: 80,
@@ -114,7 +124,7 @@ const styles = StyleSheet.create({
   profileNumbers: {
     justifyContent: "center",
     alignItems: "center",
-    marginHorizontal: 26,
+    marginHorizontal: 12,
     marginVertical: 15,
   },
   postCount: {
