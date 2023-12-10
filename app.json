@@ -28,6 +28,14 @@
     },
     "extra": {
       "clerkPublishableKey": "pk_test_c3R1bm5pbmctbW9uZ29vc2UtODEuY2xlcmsuYWNjb3VudHMuZGV2JA"
-    }  
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
   }
 }

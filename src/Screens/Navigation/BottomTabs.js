@@ -4,9 +4,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import InstagramFeed from "../Home";
 import Search from "../Search";
+import AddHug from "../AddHug";
 import Map from "../Map";
 import Profile from "../Profile";
-import Reels from "../Reels";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,10 +34,10 @@ function MyTabBar({ state, descriptors, navigation }) {
           iconName = isFocused ? "home" : "home-outline";
         } else if (route.name === "Search") {
           iconName = isFocused ? "search" : "search-outline";
-        } else if (route.name === "Map") {
+        } else if (route.name === "AddHug") {
           iconName = isFocused ? "add-circle" : "add-circle-outline";
-        } else if (route.name === "Reels") {
-          iconName = isFocused ? "videocam" : "videocam-outline";
+        } else if (route.name === "Map") {
+          iconName = isFocused ? "location" : "location-outline";
         } else if (route.name === "Profile") {
           iconName = isFocused ? "person-circle" : "person-circle-outline";
         }
@@ -73,11 +73,11 @@ const BottomTabs = () => {
         name="Search"
         component={Search}
       />
-      <Tab.Screen options={{ headerShown: false }} name="Map" component={Map} />
+      <Tab.Screen options={{ headerShown: false }} name="AddHug" component={AddHug} />
       <Tab.Screen
         options={{ headerShown: false }}
-        name="Reels"
-        component={Reels}
+        name="Map"
+        component={Map}
       />
       <Tab.Screen
         options={{ headerShown: false }}

@@ -7,37 +7,37 @@ import {
   FlatList,
   SafeAreaView,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import Carousel from "react-native-snap-carousel-v4";
 import { users } from "../utils/users";
-import male from "../../assets/male.png"
-import female from "../../assets/female.png"
+import male from "../../assets/male.png";
+import female from "../../assets/female.png";
 import { colors } from "../utils/colors";
 import UseAuthExample from "./useAuthExample";
 import UseUserExample from "./useUserExample";
 
-const dimensions = Dimensions.get("screen")
+const dimensions = Dimensions.get("screen");
 
-const data = [
+const hugs = [
   {
     id: "1",
-    user: "ATO",
+    users: ["alex"],
     image: "https://picsum.photos/id/231/200/300",
     likes: "44,686",
     caption: "The game in Japan was amazing and I want to share some photos",
   },
   {
     id: "2",
-    user: "joshua_",
+    users: ["alex", "arberto"],
     image: "https://picsum.photos/id/232/200/300",
     likes: "44,686",
     caption: "The game in Japan was amazing and I want to share some photos",
   },
   {
     id: "3",
-    user: "joshua_",
+    users: ["alex", "dani", "pablo"],
     image: "https://picsum.photos/id/233/200/300",
     likes: "44,686",
     caption: "The game in Japan was amazing and I want to share some photos",
@@ -45,36 +45,50 @@ const data = [
   // Add more posts as needed
 ];
 
-const suggestedUsers = [
-  {
-    id: "s1",
-    username: "user1",
-    avatar: "https://picsum.photos/id/240/200/300",
-  },
-  {
-    id: "s2",
-    username: "user2",
-    avatar: "https://picsum.photos/id/241/200/300",
-  },
-  {
-    id: "s3",
-    username: "user3",
-    avatar: "https://picsum.photos/id/242/200/300",
-  },
-  // Add more suggested users as needed
-];
-
-const InstagramFeed = ({navigation}) => {
-  const renderPost = ({ item }) => (
+const InstagramFeed = ({ navigation }) => {
+  const formatUserNames = (users) => {
+    const length = users.length;
+    if (length === 0) {
+      return "";
+    } else if (length === 1) {
+      return <Text>{users[0]}</Text>;
+    } else if (length === 2) {
+      return (
+        <Text>
+          {users[0]} <Text style={{ fontWeight: "normal" }}>y</Text> {users[1]}
+        </Text>
+      );
+    } else {
+      const lastTwoUsers = (
+        <Text>
+          {users[length - 2]} <Text style={{ fontWeight: "normal" }}>y</Text> {users[length - 1]}
+        </Text>
+      );
+      const remainingUsers = (
+        <Text>{users.slice(0, length - 2).join(", ")}</Text>
+      );
+      return (
+        <Text>
+          {remainingUsers}, {lastTwoUsers}
+        </Text>
+      );
+    }
+  };  
+  
+  const renderHug = ({ item }) => (
     <View style={styles.post}>
       <View style={styles.postHeader}>
+        <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
         <Image
           source={{
             uri: "https://picsum.photos/id/234/200/300",
           }}
           style={styles.userAvatar}
-        />
-        <Text>{item.user}</Text>
+          />
+          <Text style={{ fontWeight: 500, marginLeft: 10 }}>
+            {formatUserNames(item.users)}
+          </Text>
+          </View>
         <Ionicons name="ellipsis-vertical" size={24} color="black" />
       </View>
       <Image source={{ uri: item.image }} style={styles.postImage} />
@@ -96,26 +110,33 @@ const InstagramFeed = ({navigation}) => {
         </View>
         <Text>Liked by craig_love and {item.likes} others</Text>
         <Text>
-          {item.user} | {item.caption}
+          {item.users[0]} | {item.caption}
         </Text>
       </View>
     </View>
   );
+
   const renderSuggestedUser = ({ item }) => (
     <TouchableOpacity style={styles.suggestedUser}>
-      <Image source={item.gender == "male" ? male : female} style={styles.suggestedUserAvatar} />
+      <Image
+        source={item.gender == "male" ? male : female}
+        style={styles.suggestedUserAvatar}
+      />
       <Text style={styles.suggestedUsername}>{item.username}</Text>
       <TouchableOpacity style={styles.addFriendButton}>
         <Text style={styles.addFriendButtonText}>Añadir amigo</Text>
       </TouchableOpacity>
     </TouchableOpacity>
   );
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Abraza</Text>
         <View style={styles.iconsTop}>
-          <TouchableOpacity onPress={()=>navigation.navigate("Notifications")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Notifications")}
+          >
             <Ionicons
               style={{ right: 10 }}
               name="heart-outline"
@@ -126,42 +147,21 @@ const InstagramFeed = ({navigation}) => {
           <AntDesign name="message1" size={24} color="black" />
         </View>
       </View>
-
-      {/* <View style={styles.storiesContainer}>
-        <UseAuthExample/>
-
-        <FlatList
-          horizontal
-          data={data}
-          renderItem={({ item }) => (
-            <Image
-              source={{
-                uri: "https://picsum.photos/id/230/200/300",
-              }}
-              style={styles.story}
-            />
-          )}
-          keyExtractor={(item) => item.id}
-        />
-      </View> */}
-      <View style={styles.bgContainer}>
-        <Text>Sugeridos</Text>
-        <View style={styles.suggestedContainer}>
-
-        <Carousel
-          data={users}
-          renderItem={renderSuggestedUser}
-          sliderWidth={dimensions.width}
-          itemWidth={120}
-          layout="default"
-          loop
-          />
-          </View>
-      </View>
-
       <FlatList
-        data={data}
-        renderItem={renderPost}
+        ListHeaderComponent={
+          <View style={styles.bgContainer}>
+            <Text style={{ fontWeight: "bold", marginBottom: 10, marginLeft: 10 }}>Sugeridos para ti</Text>
+            <Carousel
+              data={users}
+              renderItem={renderSuggestedUser}
+              sliderWidth={dimensions.width}
+              itemWidth={120}
+              layout="default"
+            />
+          </View>
+        }
+        data={hugs}
+        renderItem={renderHug}
         keyExtractor={(item) => item.id}
         style={styles.postsList}
       />
@@ -241,22 +241,20 @@ const styles = StyleSheet.create({
   iconSpacing: {
     marginRight: 10,
   },
-  iconsTop:{
+  iconsTop: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10, 
+    marginBottom: 10,
   },
-  bgContainer:{
-    backgroundColor: colors.gainsboro,
+  bgContainer: {
     paddingVertical: 10,
     paddingHorizontal: 0,
-  }, 
-  suggestedContainer:{
-    backgroundColor: colors.white,
-  }, 
+    backgroundColor: colors.gainsboro,
+  },
   suggestedUser: {
     alignItems: "center",
     padding: 10,
+    backgroundColor: colors.white
   },
   suggestedUserAvatar: {
     width: 80,
@@ -265,7 +263,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   suggestedUsername: {
-    fontWeight: "bold",
+    fontWeight: "500",
     marginBottom: 5,
   },
   addFriendButton: {

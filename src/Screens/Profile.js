@@ -130,16 +130,15 @@ const styles = StyleSheet.create({
   postCount: {
     flex: 1,
     alignItems: "center",
+    fontWeight: "bold",
   },
   followers: {
     flex: 1,
     alignItems: "center",
-    fontWeight: "bold",
   },
   following: {
     flex: 1,
     alignItems: "center",
-    fontWeight: "bold",
   },
   bio: {
     padding: 15,
