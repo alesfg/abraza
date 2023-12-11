@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import okman from "../../../assets/okman.png"
 
-const AddPost = ({ navigation }) => {
+const AddHugImage = ({ navigation }) => {
   const [image, setImage] = useState(null);
+  const [aspectRatio, setAspectRatio] = useState('3/4');
 
   useEffect(() => {
     requestGalleryPermission();
@@ -24,12 +26,13 @@ const AddPost = ({ navigation }) => {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [3, 4],
+        aspect: aspectRatio === '3/4' ? [3, 4] : [1, 1], // Dinámico: 3/4 o 1/1 según el estado
         quality: 1,
       });
 
-      if (!result.cancelled) {
+      if (!result.canceled) {
         setImage(result.uri);
+        setAspectRatio('3/4'); // Restablecer el aspect ratio al seleccionar una nueva imagen
       }
     } catch (error) {
       console.error('Error al seleccionar una imagen:', error);
@@ -37,8 +40,13 @@ const AddPost = ({ navigation }) => {
   };
 
   const handleNext = () => {
-    // Aquí puedes implementar la lógica para continuar con el flujo de Add Post
-    // Puedes enviar la imagen a la siguiente pantalla o realizar otras acciones necesarias
+    // Puedes implementar lógica adicional aquí, como enviar la imagen y las etiquetas al servidor
+    navigation.navigate('TagHug', { image, aspectRatio });
+  };
+
+  const handleResize = () => {
+    // Cambiar el aspect ratio entre 3/4 y 1/1 dinámicamente
+    setAspectRatio((prevAspectRatio) => (prevAspectRatio === '3/4' ? '1/1' : '3/4'));
   };
 
   return (
@@ -47,13 +55,22 @@ const AddPost = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext}>
+        <TouchableOpacity onPress={handleNext} disabled={image == null ? true : false}>
           <Text style={styles.nextButton}>Siguiente</Text>
         </TouchableOpacity>
       </View>
-      {image && <Image source={{ uri: image }} style={styles.imagePreview} />}
+      <View style={styles.imageContainer}>
+        {image ? (
+          <Image source={{ uri: image }} style={{ ...styles.imagePreview, aspectRatio }} />
+        ) : (
+          <Image source={okman} style={{ ...styles.imagePreview, aspectRatio }} />
+        )}
+      </View>
       <TouchableOpacity style={styles.button} onPress={pickImage}>
         <Text style={styles.buttonText}>Seleccionar Imagen</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.resizeButton} onPress={handleResize}>
+        <Ionicons name="crop" size={24} color="black" />
       </TouchableOpacity>
     </View>
   );
@@ -70,11 +87,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   imagePreview: {
     width: '100%',
-    height: 300,
     marginBottom: 20,
-    aspectRatio: '3/4'
   },
   button: {
     backgroundColor: '#3498db',
@@ -91,6 +111,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  tag: {
+    color: '#fff',
+    backgroundColor: '#3498db',
+    padding: 5,
+    borderRadius: 5,
+  },
+  resizeButton: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    backgroundColor: '#3498db',
+    padding: 16,
+    borderRadius: 30,
+  },
 });
 
-export default AddPost;
+export default AddHugImage;

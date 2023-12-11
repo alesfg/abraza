@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import InstagramFeed from "../Home";
 import Search from "../Search";
-import AddHug from "../AddHug";
+import AddHug from "./AddHug";
 import Map from "../Map";
 import Profile from "../Profile";
 
